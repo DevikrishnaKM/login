@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+body{
+    font-family: 'Open Sans', sans-serif;
+    background-image: url('assets/login.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.title{
+    color: aliceblue;
+}
+
+.center-div{
+    padding-top: 10%;
+}
+.btn.btn-success{
+    padding: .4em 2em;
+}
+form{
+    padding: 0 3em;
+}
+button{
+    margin-top: 10%;
+}
+span{
+    font-size: .8em;
+    
+}
+
