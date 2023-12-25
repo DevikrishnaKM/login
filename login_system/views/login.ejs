@@ -1,4 +1,3 @@
-<%-include('header')-%>
 
 
     <div class="text-center center-div" id="login">
@@ -6,13 +5,20 @@
             <div class="title pb-5">
                 <h2 class="font-weight-bold">Login System</h2>
                 <span>Log in for the existing user</span>
-                <% if(locals.logout){%>
-                    <div class="alter alert-success text-center">
-                        <%= logout%>
+                <% if (errorMessage.length > 0) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%- errorMessage %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>
-                    <%}%>
+                <%}%>
+                <% if (successMessage.length > 0) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%- successMessage %>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    </div>
+                <%}%>
             </div>
-            <form action="/route/login" method="POST" onsubmit="validation()" class="pt-3">
+            <form action="/login" method="POST" onsubmit="validation()" class="pt-3">
                 <div class="form-group">
                     <input type="email" class="form-control" placeholder="email" name="email" id="email" >
                     <small class="form-text text-muted text-left">Register email address</small>
@@ -37,4 +43,4 @@
         
         }
     </script>
-    <%-include('footer')-%>
+   

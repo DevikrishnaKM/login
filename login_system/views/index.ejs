@@ -1,0 +1,14 @@
+
+<div class="text-center text-white center-div mt-5" id="login">
+   <div class="container w-25 border py-5 mt-5">
+    <% if (successMessage.length > 0) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%- successMessage %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+        </div>
+    <%}%>
+    <h3>Welcome to Express Dashboard</h3>
+    <h5><%=user%></h5>
+    <a class="text-white" href="/logout">Logout</a>
+   </div>
+</div>

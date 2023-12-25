@@ -2,50 +2,75 @@
 var express = require('express');
 var router = express.Router();
 
+function isAuthentificated(req,res,next){
+    if(req.session && req.session.user){
+        next();
+    }else{
+        req.flash('errorMessage',"Please log in to access the page.");
+        res.redirect("/login");
+    }
+}
+
+const isLoggedOut=(req,res,next)=>{
+   if(req.session && req.session.user){
+    res.redirect("/");
+   }else{
+    next();
+   }
+}
+
+
 const credential = {
     email: "devikrishna1234@gmail.com",
     password: "devikrishna123"
 }
 
-router.post('/login', (req, res) => {
-    console.log("Entered Email:", req.body.email);
-    console.log("Entered Password:", req.body.password);
+router.get("/login",isLoggedOut,(req,res)=>{
+    const locals={
+        title:'Login System'
+    }
+    res.render('login',{
+        locals,
+        errorMessage:req.flash("errorMessage"),
+        successMessage:req.flash("successMessage")
+    });
+});
 
-    if (req.body.email === credential.email && req.body.password === credential.password) {
-        console.log("Credentials Matched");
-        req.session.user = req.body.email;
-        req.session.user=req.body.password;
-        res.redirect('/route/dashboard');
-    } else {
-        console.log("Invalid Credentials");
-        req.session.user
-        res.redirect("/");
-       
+router.post("/login",(req,res)=>{
+    if(req.body){
+        const {email,password}=req.body;
+        if(email=== credential.email){
+            if(password===credential.password){
+                req.flash("successMessage","you have successfully logged in.");
+                req.session.user=email;
+                res.redirect("/");
+            }
+        }else{
+            req.flash("errorMessage","Invalid Email.");
+            res.redirect("/login");
+        }
+    }else{
+        req.flash("errorMessage","Please enter email and password");
+        res.redirect("/login");
     }
 });
 
 
-//route for dashboard
-router.get('/dashboard', (req, res) => {
-    if (req.session.user) {
-        res.render('dashboard', { user: req.session.user })
-    } else {
-        res.send("Unauthorize User")
-    }
-})
-
 router.get('/logout', (req, res) => {
-    console.log("Attempting to destroy session...");
-    req.session.destroy(function (err) {
-        if (err) {
-            console.log("Error destroying session:", err);
-            res.send("Error");
-        } else {
-            console.log("Session destroyed successfully.");
-            res.render('base', { title: "Express", logout: "Logout successfully!" });
-        }
+   req.flash("successMessage","You have been Logged out.")
+    req.session.destroy();
+    req.redirect("/login");
+});
+
+router.get("/",isAuthentificated,(req,res)=>{
+    const locals={
+        title:'Home page'
+    }
+    res.render("index",{
+        locals,
+        successMessage:req.flash("successMessage"),
+        user:req.session.user
     });
-    
 });
 
 
